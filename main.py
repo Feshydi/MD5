@@ -20,10 +20,10 @@ def fun_i(x, y, z):
     return y ^ (~z | x)
 
 
-a0 = bitstring.BitArray('0x01234567')
-b0 = bitstring.BitArray('0x89abcdef')
-c0 = bitstring.BitArray('0xfedcba98')
-d0 = bitstring.BitArray('0x76543210')
+a0 = bitstring.BitArray('0x67452301')
+b0 = bitstring.BitArray('0xefcdab89')
+c0 = bitstring.BitArray('0x98badcfe')
+d0 = bitstring.BitArray('0x10325476')
 
 s = [7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
      5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20,
