@@ -1,7 +1,6 @@
 import math
 import numpy as np
 import bitstring
-import prettytable
 
 
 def fun_f(x, y, z):
@@ -19,7 +18,10 @@ def fun_h(x, y, z):
 def fun_i(x, y, z):
     return y ^ (~z | x)
 
-
+# a0 = bitstring.BitArray('0x01234567')
+# b0 = bitstring.BitArray('0x89abcdef')
+# c0 = bitstring.BitArray('0xfedcba98')
+# d0 = bitstring.BitArray('0x76543210')
 a0 = bitstring.BitArray('0x67452301')
 b0 = bitstring.BitArray('0xefcdab89')
 c0 = bitstring.BitArray('0x98badcfe')
@@ -35,7 +37,8 @@ for i in range(64):
     tmp = np.uint32(2 ** 32 * math.fabs(math.sin(i + 1)))
     T[i] = bitstring.BitArray(uint=tmp, length=32)
 
-string = bitstring.BitArray('0b110111101101100111000101')
+# string = bitstring.BitArray('0b011011010110010000110101') #'md5'
+string = bitstring.BitArray('0b110111101101100111000101') #'ЮЩЕ'
 print('Сообщение:', string.hex)
 
 str_len = bitstring.BitArray(int=len(string), length=8)
@@ -85,5 +88,6 @@ a0 = bitstring.BitArray(uint=((a0.int + A.int) % 0xffffffff), length=32)
 b0 = bitstring.BitArray(uint=((b0.int + B.int) % 0xffffffff), length=32)
 c0 = bitstring.BitArray(uint=((c0.int + C.int) % 0xffffffff), length=32)
 d0 = bitstring.BitArray(uint=((d0.int + D.int) % 0xffffffff), length=32)
+print(a0, b0, c0, d0)
 digest = bitstring.BitArray(f'0b{a0.bin + b0.bin + c0.bin + d0.bin}')
 print(digest.hex)
