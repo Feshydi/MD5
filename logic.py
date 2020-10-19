@@ -77,6 +77,30 @@ def get_d0():
     return d0
 
 
+def set_a0(value):
+    """ Принимает значени и устанавливает его в буфер A """
+    global a0
+    a0 = value
+
+
+def set_b0(value):
+    """ Принимает значени и устанавливает его в буфер B """
+    global b0
+    b0 = value
+
+
+def set_c0(value):
+    """ Принимает значени и устанавливает его в буфер C """
+    global c0
+    c0 = value
+
+
+def set_d0(value):
+    """ Принимает значени и устанавливает его в буфер D """
+    global d0
+    d0 = value
+
+
 def get_shift(iteration_num):
     """
     Принимает номер итерации
@@ -86,9 +110,7 @@ def get_shift(iteration_num):
 
 
 def const_table_init():
-    """
-    Инициализирует таблицу констант T
-    """
+    """ Инициализирует таблицу констант T """
     for i in range(64):
         tmp = np.uint32(2 ** 32 * math.fabs(math.sin(i + 1)))
         T[i] = bitstring.BitArray(uint=tmp, length=32)
@@ -124,16 +146,12 @@ def update_message(tmp):
 
 
 def get_message():
-    """
-    Возвращает обрабатываемую переменную типа BitArray
-    """
+    """ Возвращает обрабатываемую переменную типа BitArray """
     return bit_message
 
 
 def append_padding_bits():
-    """
-    Выравнивает поток, пока его длинна не будет равна 448 по модулю 512
-    """
+    """ Выравнивает поток, пока его длинна не будет равна 448 по модулю 512 """
     update_message('0x80')
     print(get_message())
     while len(get_message()) % 512 != 448:
@@ -141,50 +159,23 @@ def append_padding_bits():
 
 
 def append_length():
-    """
-    Добавление 64-битного представления длины данных
-    """
+    """ Добавление 64-битного представления длины данных """
     update_message(message_len)
     while len(get_message()) < 512:
         update_message('0x00')
 
 
 def message_blocks_init():
+    """ Разбивает 512-битный блок на массив из 16 слов по 32 бита """
     i = 0
     for nibble in bit_message.cut(32):
         M[i] = nibble
         i += 1
 
-# i = 0
-# for nibble in bit_message.cut(32):
-#     M[i] = nibble
-#     i += 1
 
-# for i in range(64):
-#     F = 0
-#     g = 0
-#     if 0 <= i <= 15:
-#         F = fun_f(B, C, D)
-#         g = i
-#     elif 16 <= i <= 31:
-#         F = fun_g(B, C, D)
-#         g = (5 * i + 1) % 16
-#     elif 32 <= i <= 47:
-#         F = fun_h(B, C, D)
-#         g = (3 * i + 5) % 16
-#     elif 48 <= i <= 63:
-#         F = fun_i(B, C, D)
-#         g = (7 * i) % 16
-#     F = bitstring.BitArray(uint=((F.int + A.int + T[i].int + M[g].int) % 0xffffffff), length=32)
-#     A = D
-#     D = C
-#     C = B
-#     B = bitstring.BitArray(uint=((B.int + (F << s[i]).int) % 0xffffffff), length=32)
-#     print(f'Раунд {(i + 16) // 16}, итерация {(i + 1) % 16}.', A.hex, B.hex, C.hex, D.hex)
-# a0 = bitstring.BitArray(uint=((a0.int + A.int) % 0xffffffff), length=32)
-# b0 = bitstring.BitArray(uint=((b0.int + B.int) % 0xffffffff), length=32)
-# c0 = bitstring.BitArray(uint=((c0.int + C.int) % 0xffffffff), length=32)
-# d0 = bitstring.BitArray(uint=((d0.int + D.int) % 0xffffffff), length=32)
-# print(a0, b0, c0, d0)
-# digest = bitstring.BitArray(f'0b{a0.bin + b0.bin + c0.bin + d0.bin}')
-# print(digest.hex)
+def get_block(iteration_num):
+    """
+    Принимает номер итерации
+    Возвращает соответствующий 32-битный блок
+    """
+    return M[iteration_num]
