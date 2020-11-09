@@ -153,7 +153,6 @@ def get_message():
 def append_padding_bits():
     """ Выравнивает поток, пока его длинна не будет равна 448 по модулю 512 """
     update_message('0x80')
-    print(get_message())
     while len(get_message()) % 512 != 448:
         update_message('0x00')
 
